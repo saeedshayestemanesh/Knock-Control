@@ -1,0 +1,110 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>pdfSpk</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-06-03"><meta name="DC.source" content="pdfSpk.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>pdfSpk</h1><!--introduction--><p>Probability density function of closed-loop relative spark advance</p><!--/introduction--><h2>Syntax<a name="1"></a></h2><pre class="codeinput">  [Pn,spkStats,pStats]= pdfSpk(n,M,P0,theta,pCurve)
+  [Pn,spkStats,pStats]= pdfSpk(n,M,P0,theta,pCurve,fig)
+</pre><h2>Description<a name="2"></a></h2><p><tt>[Pn,spkStats,pStats]= pdfSpk(n,M,P0,theta,pCurve)</tt> returns <tt>Pn</tt> the length(theta) element probability density fn of closed loop spark advance states, given <tt>n</tt> the desired cycle number, <tt>M</tt> the state transition matrix <tt>M</tt>, and initial spark distribution <tt>P0</tt>.  If <tt>n=inf</tt>, the steady state distribution is returned.</p><p>If n is a vector [0:n], Pn is a [length(theta) x (n+1)] matrix containing the evolution of the closed loop spark pdf with time / cycle number.  The <tt>j</tt> -th column of <tt>Pn</tt> therefore gives the closed loop pdf at cycle number <tt>j-1</tt>.  If P0 is a scalar value, it is assumed to represent an initial spark advance angle with probability 1, from which the true P0 is constructed.</p><p>Additional input arguments <tt>theta</tt> and <tt>pCurve</tt> are vectors containing (respectively) the relative spark angles and knock probability at each controller state. Additional output argument <tt>spkStats</tt> is a <tt>[2 x length(Pn)]</tt> matrix containing the ensemble mean (row1) and ensemble variance (row2) for the distribution(s) in <tt>Pn</tt>. Output argument <tt>pStats</tt> is a similar matrix containing the mean and variance of the instantaeous knock probability corresponding to the spark angle distributions <tt>Pn</tt>.</p><p><tt>pdfSpk(-)</tt> with no left hand arguments, or <tt>pdfSpk(-,'Fig')</tt> with specified input <tt>'Fig'</tt>, plots a histogram of the final spark angle probability density function at cycle <tt>n</tt> and of the instantaneous knock probabilities.  If <tt>n</tt> is a vector, the evolution of <tt>Pn</tt> with cycle number is also plotted as an intensity image plot, and the ensemble mean spark advance and ensemble mean instantaeous knock probabilty are also plotted as a function of cycle number, <tt>n</tt>.</p><h2>Examples<a name="3"></a></h2><h2>See also<a name="4"></a></h2><p><a href="mSpk.html"><tt>mSpk</tt></a>    <a href="pdfKnk.html"><tt>pdfKnk</tt></a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% pdfSpk
+% Probability density function of closed-loop relative spark advance
+%
+%% Syntax
+  [Pn,spkStats,pStats]= pdfSpk(n,M,P0,theta,pCurve)
+  [Pn,spkStats,pStats]= pdfSpk(n,M,P0,theta,pCurve,fig)
+  
+%% Description
+% |[Pn,spkStats,pStats]= pdfSpk(n,M,P0,theta,pCurve)| returns |Pn| the length(theta)
+% element probability density fn of closed loop spark advance states, given |n| the 
+% desired cycle number, |M| the state transition matrix |M|, and initial spark 
+% distribution |P0|.  If |n=inf|, the steady state distribution is returned.
+%
+% If n is a vector [0:n], Pn is a [length(theta) x (n+1)] matrix containing the 
+% evolution of the closed loop spark pdf with time / cycle number.  The |j| -th column of
+% |Pn| therefore gives the closed loop pdf at cycle number |j-1|.  If P0 is a scalar value, 
+% it is assumed to represent an initial spark advance angle with probability 1, from which
+% the true P0 is constructed.
+%
+% Additional input arguments |theta| and |pCurve| are vectors containing (respectively) 
+% the relative spark angles and knock probability at each controller state. Additional 
+% output argument |spkStats| is a |[2 x length(Pn)]| matrix containing the ensemble mean
+% (row1) and ensemble variance (row2) for the distribution(s) in |Pn|.  
+% Output argument |pStats| is a similar matrix containing the mean and variance of the 
+% instantaeous knock probability corresponding to the spark angle distributions |Pn|.
+% 
+% |pdfSpk(-)| with no left hand arguments, or |pdfSpk(-,'Fig')| with specified input |'Fig'|, 
+% plots a histogram of the final spark angle probability density function at cycle |n| and of  
+% the instantaneous knock probabilities.  If |n| is a vector, the evolution of |Pn| with cycle
+% number is also plotted as an intensity image plot, and the ensemble mean spark advance and
+% ensemble mean instantaeous knock probabilty are also plotted as a function of cycle number, |n|.
+%
+%% Examples
+  
+%% See also
+% <mSpk.html |mSpk|>    <pdfKnk.html |pdfKnk|>    
+
+##### SOURCE END #####
+--></body></html>

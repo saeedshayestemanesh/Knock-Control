@@ -1,0 +1,38 @@
+CC     = "D:\Program Files\MATLAB\R2014a\sys\lcc\bin\lcc.exe"
+LD     = "D:\Program Files\MATLAB\R2014a\sys\lcc\bin\lcclnk.exe"
+LIBCMD = "D:\Program Files\MATLAB\R2014a\sys\lcc\bin\lcclib.exe"
+CFLAGS = -c -Zp8 -DMATLAB_MEX_FILE -noregistrylookup 
+LDFLAGS = -s -dll -L"D:\Program Files\MATLAB\R2014a\sys\lcc\lib" 
+LIBFLAGS = 
+
+OBJECTS = \
+	"knock0_sfun.obj"\
+	"c2_knock0.obj"\
+	"knock0_sfun_registry.obj"\
+	"lccstub.obj"\
+	"D:\Program Files\MATLAB\R2014a\sys\lcc\mex\lccdef.def"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\sf_runtime.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libmwblas.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libmx.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libmex.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libmat.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libfixedpoint.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libut.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libmwmathutil.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libemlrt.lib"\
+	"D:\Program Files\MATLAB\R2014a\extern\lib\win32\lcc\libmwsl_log_load_blocks.lib"\
+	"D:\Program Files\MATLAB\R2014a\lib\win32\libippmwipt.lib"\
+
+INCLUDE_PATH= -I"D:\Program Files\MATLAB\R2014a\sys\lcc\include"  -I"D:\Program Files\MATLAB\R2014a\extern\include"  -I"D:\Program Files\MATLAB\R2014a\simulink\include"  -I"D:\Program Files\MATLAB\R2014a\stateflow\c\mex\include"  -I"D:\Program Files\MATLAB\R2014a\rtw\c\src"  -I"C:\Users\SaEd\Desktop\Research\Simulation2\slprj\_sfprj\knock0\_self\sfun\src" 
+ 
+
+knock0_sfun.mexw32 : $(MAKEFILE) $(OBJECTS)
+	$(LD) $(LDFLAGS) -o knock0_sfun.mexw32 @knock0_sfun.lmko
+knock0_sfun.obj :	"knock0_sfun.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "knock0_sfun.c"
+c2_knock0.obj :	"c2_knock0.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c2_knock0.c"
+knock0_sfun_registry.obj :	"knock0_sfun_registry.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "knock0_sfun_registry.c"
+lccstub.obj :	"D:\Program Files\MATLAB\R2014a\sys\lcc\mex\lccstub.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "D:\Program Files\MATLAB\R2014a\sys\lcc\mex\lccstub.c"

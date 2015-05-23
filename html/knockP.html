@@ -1,0 +1,127 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>knockP</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2014-06-03"><meta name="DC.source" content="knockP.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>knockP</h1><!--introduction--><p>Computes knock probability curves</p><!--/introduction--><h2>Syntax<a name="1"></a></h2><pre class="codeinput">  [pCurve1,theta1]= knockP(Tx,cdfData)
+  [pCurve1,theta1]= knockP(Tx,cdfData,cyl)
+  [pCurve1,theta1]= knockP(Tx,cdfData,cyl,theta)
+  [pCurve1,theta1]= knockP(Tx,cdfData,cyl,theta,fig)
+</pre><h2>Description<a name="2"></a></h2><p><tt>[pCurve1,theta1]= knockP(Tx,cdfData)</tt> returns a <tt>[nExpts x nCyl x size(Tx,1)]</tt> matrix of knock probability curve values  evaluated at spark angles <tt>theta1=[cdfData.theta]</tt> corresponding to the scalar, vector or matrix of specified knock intensity thresholds <tt>Tx</tt>.</p><p>The columns of <tt>Tx</tt> represent cylinder specific thresholds to be applied, (the same threshold is applied to all cylinders if there is only one column).  The rows entries of <tt>Tx</tt> denote different thresholds to be applied to any given cylinder, resulting in different knock probability curves.  Input parameter <tt>cdfData</tt> is a structure array of experimental cdf data with fields <tt>cdfData.x</tt>, <tt>cdfData.Fx</tt>, and <tt>cdfData.theta</tt> - see eCdf</p><p><tt>[pCurve1,theta1]= knockP(Tx,cdfData,cyl)</tt> computes the knock probability curve values only for the cylinder(s) that are specified by the scalar or vector argument <tt>cyl</tt>. If <tt>cyl</tt> is empty <tt>[]</tt>, the knock probability curves are computed for all cylinders.</p><p><tt>[pCurve1,theta1]= knockP(Tx,cdfData,cyl,theta)</tt> computes and interpolates (cubic spline) the knock probability curve onto the spark angle base defined by the vector <tt>theta</tt>, and the output argument <tt>theta1</tt> then equals <tt>theta</tt>. If <tt>theta</tt> is empty, the angle base <tt>[cdfData.theta]</tt> is used.</p><p><tt>knockP(-)</tt> with no left hand arguments, or <tt>knockP(-,'Fig')</tt> with specified input <tt>'Fig'</tt>, also plots the computed knock probability curves.</p><h2>Examples<a name="3"></a></h2><pre class="codeinput">  theta=[-3:2]; BLindx=4;               <span class="comment">% Specify spark angles used for the sweep, and BL knock index</span>
+  xi= loadSweep(speed,load,theta);      <span class="comment">% Load a corresponding cell array of [numCycles x numCyl] data</span>
+  myCdf= eCdf(xi,theta);                <span class="comment">% Compute enpirical Cdf for all cylinders and all spark conditions</span>
+  tradTx= p2x(0.99,myCdfn(BLindx));     <span class="comment">% Compute 1% knock prob thresholds [1 x nCyl] for each cyl at BL</span>
+  knockP(tradTx,myCdf,[],[],<span class="string">'Fig'</span>);     <span class="comment">% Compute and plot the 1% knock prob curves for all cyl at the expt points</span>
+  theta1= [-3:0.01:2]';                 <span class="comment">% Define anglebase on which to interpolate the results</span>
+  myTxs= p2x([0.99 0.8],myCdf(BLindx)); <span class="comment">% Compute 1% and 20% knock prob thresholds [2 x nCyl] for each cyl at BL</span>
+  knockP(myTxs,myCdf,1,theta,<span class="string">'Fig'</span>);    <span class="comment">% Compute and plot the 1% and 20% interpolated knock prob curves for cyl #1</span>
+</pre><h2>See also<a name="4"></a></h2><p><a href="eCdf.html"><tt>eCdf</tt></a>    <a href="normCdf.html"><tt>normCdf</tt></a>    <a href="p2x.html"><tt>p2x</tt></a>    <a href="optTx.html"><tt>optTx</tt></a>    <a href=".html"></a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% knockP
+% Computes knock probability curves
+%
+%% Syntax
+  [pCurve1,theta1]= knockP(Tx,cdfData)
+  [pCurve1,theta1]= knockP(Tx,cdfData,cyl)
+  [pCurve1,theta1]= knockP(Tx,cdfData,cyl,theta)
+  [pCurve1,theta1]= knockP(Tx,cdfData,cyl,theta,fig)
+  
+%% Description
+% |[pCurve1,theta1]= knockP(Tx,cdfData)| returns a |[nExpts x nCyl x size(Tx,1)]| matrix 
+% of knock probability curve values  evaluated at spark angles |theta1=[cdfData.theta]|
+% corresponding to the scalar, vector or matrix of specified knock intensity thresholds |Tx|.
+%
+% The columns of |Tx| represent cylinder specific thresholds to be applied, (the same 
+% threshold is applied to all cylinders if there is only one column).  The rows entries of |Tx|
+% denote different thresholds to be applied to any given cylinder, resulting in different knock 
+% probability curves.  Input parameter |cdfData| is a structure array of experimental cdf data
+% with fields |cdfData.x|, |cdfData.Fx|, and |cdfData.theta| - see eCdf
+%
+% |[pCurve1,theta1]= knockP(Tx,cdfData,cyl)| computes the knock probability curve values only 
+% for the cylinder(s) that are specified by the scalar or vector argument |cyl|. 
+% If |cyl| is empty |[]|, the knock probability curves are computed for all cylinders.
+%
+% |[pCurve1,theta1]= knockP(Tx,cdfData,cyl,theta)| computes and interpolates (cubic spline) the 
+% knock probability curve onto the spark angle base defined by the vector |theta|, and the 
+% output argument |theta1| then equals |theta|. If |theta| is empty, the angle base |[cdfData.theta]| is used.
+%
+% |knockP(-)| with no left hand arguments, or |knockP(-,'Fig')| with specified input |'Fig'|, 
+% also plots the computed knock probability curves.
+%
+%% Examples
+  theta=[-3:2]; BLindx=4;               % Specify spark angles used for the sweep, and BL knock index
+  xi= loadSweep(speed,load,theta);      % Load a corresponding cell array of [numCycles x numCyl] data
+  myCdf= eCdf(xi,theta);                % Compute enpirical Cdf for all cylinders and all spark conditions
+  tradTx= p2x(0.99,myCdfn(BLindx));     % Compute 1% knock prob thresholds [1 x nCyl] for each cyl at BL
+  knockP(tradTx,myCdf,[],[],'Fig');     % Compute and plot the 1% knock prob curves for all cyl at the expt points
+  theta1= [-3:0.01:2]';                 % Define anglebase on which to interpolate the results
+  myTxs= p2x([0.99 0.8],myCdf(BLindx)); % Compute 1% and 20% knock prob thresholds [2 x nCyl] for each cyl at BL
+  knockP(myTxs,myCdf,1,theta,'Fig');    % Compute and plot the 1% and 20% interpolated knock prob curves for cyl #1
+  
+%% See also
+% <eCdf.html |eCdf|>    <normCdf.html |normCdf|>    <p2x.html |p2x|>    <optTx.html |optTx|>    <.html ||>    
+
+##### SOURCE END #####
+--></body></html>
