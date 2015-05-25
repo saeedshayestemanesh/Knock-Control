@@ -43,4 +43,4 @@ Madv([1:numStates] + m1pColIndexes * numStates) = (1-pCurve);   % MatrixIndex = 
 Madv_High([1:numStates] + m1pColIndexes_High * numStates) = (1-pCurve_High);
 Mret([1:numStates] + m2pColIndexes * numStates) = pCurve-pCurve_High;       % MatrixIndex = row + (colIndexFromZero)*colLength
 Mret_High([1:numStates] + m2pColIndexes_High * numStates) = pCurve_High;
-M=(Madv + Mret+Mret_High);
+M=(Madv + Mret + Mret_High);

@@ -5,6 +5,12 @@
 
 close all
 
+m1=1; m2=80;                                                                % Define controller gains
+m1_High=4; m2_High=150;
+
+for m1 = 1:1:5
+    for m2 = 80:10:120
+        for m2_High = 150:50:350
 
 % Set default plot parameters
 set(0,'DefaultLineLineWidth',2)
@@ -16,17 +22,17 @@ BLindx= 5;                                                                  % In
 cyl= 1;                                                                     % Index of cylinder#'s to be analyzed
 Delta= 0.015;                                                               % Define algorithm resolution [deg]
 delta= 0.105;                                                               % Define spark angle actuator resolution [deg]
-m1=1; m2=99;                                                                % Define controller gains
-m1_High=4; m2_High=150;
+%m1=1; m2=99;                                                                % Define controller gains
+%m1_High=4; m2_High=200;
 % Compute the normalized cdf for each expt in the sweep;
 myCdf= eCdf(d,sa,[1:6]);                                                    % Estimate the cdf = [cdf.Fx cdf.x] from the data
 Save_myCdf = myCdf;
-normVal= p2x(.99,myCdf(BLindx),1);                                          % Find the value that gives 1% knock for cyl #1 at BL
+normVal= p2x(.985,myCdf(BLindx),1);                                          % Find the value that gives 1% knock for cyl #1 at BL
 normVal_High= p2x(.995,myCdf(BLindx),1);                                    % Add high intensity treshold
 myCdf= normCdf(myCdf,normVal,[1:6]);                                        % Normalize all cylinders with respect to this value
 myCdf_High= normCdf(Save_myCdf,normVal_High,[1:6]);
 % Compute knock thresholds
-tradTx= p2x(0.99,myCdf(BLindx),cyl);                                        % tradTx= 1% knock probability threshold [1 x nCyl]
+tradTx= p2x(0.985,myCdf(BLindx),cyl);                                        % tradTx= 1% knock probability threshold [1 x nCyl]
 tradTx_High= p2x(0.995,myCdf_High(BLindx),cyl);
 myTxs= [tradTx;];                                                           % Define which thresholds to use
 myTxs_High= [tradTx_High;];
@@ -47,28 +53,28 @@ myPcurvesPoints_High= knockP(myTxs_High,myCdf_High,cyl,sa);
 plot(sa,myPcurvesPoints,'ro');
 plot(sa,myPcurvesPoints_High,'ro');
 % Perform a time history simulation for a traditional controller            % Paper Fig 2
-figure
-    p= 0.01;           
-    knockGenTheta= theta;            
-    knockGenP= myPcurve1;
-    retardGain= m2*Delta; 
-    advanceGain= m1*Delta;
-    initialSpark= -1.6;            
-    rand('state',2000);
-    sim('knock0'); 
-    relSpark= yout.signals(2).values;
-    plot([1:length(relSpark)],relSpark,'--','color',[0 0.5 0]); hold all; %,'color',[0 0.5 0]
-    initialSpark= 1.6;              
-    rand('state',500);
-    sim('knock0');
-    relSpark= yout.signals(2).values;
-    plot([1:length(relSpark)],relSpark,'b');
-    xlim([-10 500]);
-    ylim([-2.5 2]);
-    line([0 500],[0 0],'linestyle',':','color','k','linewidth',1);
-    xlabel('Cycle number');
-    ylabel('Relative spark advance [deg]');
-    legend('\theta_0= BL-1.6^{\circ}', '\theta_0= BL+1.6^{\circ}');
+% figure
+%     p= 0.01;           
+%     knockGenTheta= theta;            
+%     knockGenP= myPcurve1;
+%     retardGain= m2*Delta; 
+%     advanceGain= m1*Delta;
+%     initialSpark= -1.6;            
+%     rand('state',2000);
+%     sim('knock0'); 
+%     relSpark= yout.signals(2).values;
+%     plot([1:length(relSpark)],relSpark,'--','color',[0 0.5 0]); hold all; %,'color',[0 0.5 0]
+%     initialSpark= 1.6;              
+%     rand('state',500);
+%     sim('knock0');
+%     relSpark= yout.signals(2).values;
+%     plot([1:length(relSpark)],relSpark,'b');
+%     xlim([-10 500]);
+%     ylim([-2.5 2]);
+%     line([0 500],[0 0],'linestyle',':','color','k','linewidth',1);
+%     xlabel('Cycle number');
+%     ylabel('Relative spark advance [deg]');
+%     legend('\theta_0= BL-1.6^{\circ}', '\theta_0= BL+1.6^{\circ}');
 
 
 % Perform a stochastic simulation for a traditional controller
@@ -100,7 +106,7 @@ figure,                                                                     % Pa
     xlim([-5 myCycles(end)]);   ylim([-2 2]);                               % Set axes limits
     xlabel('Cycle number [-]');                                             % Label x axis
     ylabel('Mean relative spark angle [deg]');                              % Label y axis
-    legend('\theta_0= BL-1.6^{\circ}', '\theta_0= BL+1.6^{\circ}');
+    %legend('\theta_0= BL-1.6^{\circ}', '\theta_0= BL+1.6^{\circ}');
 
 figure,                                                                     % Paper Fig 9: Ensemble mean instantaneous probability time histories
     myAngles= [0,0.7,1.6,-0.7,-1.6];                                        % Define initial spark angles to test
@@ -113,16 +119,18 @@ figure,                                                                     % Pa
     xlabel('Cycle number [-]');                                             % Label x axis
     ylabel('Mean knock probability [-]');                                   % Label y axis
 % 
-myAngles= [0,0.7,1.6,-0.7,-1.6];                                            % Define initial spark angles to test
-mSpk(myCycles(end),M,theta1,myAngles,'Fig');                                % Paper Fig 10: Time-averaged mean starting from each angle in myAngles
-initSpk= 0.7;
-pdfKnk(100,Madv,Mret,theta1,initSpk,'Fig');                                 % Paper Fig 12: Distribution of # knock events starting at initSpk
-%pdfKnk(myCycles(end),Madv,Mret,theta1,myAngles,'Fig');                     % Paper xxxxxx: Distribution of # knock events starting at myAngles
-mKnk(myCycles(end),M,myPcurve1,theta1,myAngles,'Fig');                      % Paper Fig 13: # Knock events as fn of cycle number
-[T,nk]=respT(M,SSspkStats(1),theta1,myPcurve1,'Fig');                       % Paper Figs 11, 14:  Response times and # knock events to thetaTarg=SS
+% myAngles= [0,0.7,1.6,-0.7,-1.6];                                            % Define initial spark angles to test
+% mSpk(myCycles(end),M,theta1,myAngles,'Fig');                                % Paper Fig 10: Time-averaged mean starting from each angle in myAngles
+% initSpk= 0.7;
+% pdfKnk(100,Madv,Mret,theta1,initSpk,'Fig');                                 % Paper Fig 12: Distribution of # knock events starting at initSpk
+% %pdfKnk(myCycles(end),Madv,Mret,theta1,myAngles,'Fig');                     % Paper xxxxxx: Distribution of # knock events starting at myAngles
+% mKnk(myCycles(end),M,myPcurve1,theta1,myAngles,'Fig');                      % Paper Fig 13: # Knock events as fn of cycle number
+% [T,nk]=respT(M,SSspkStats(1),theta1,myPcurve1,'Fig');                       % Paper Figs 11, 14:  Response times and # knock events to thetaTarg=SS
 
 
-   
+        end
+    end
+end
 
 
 
